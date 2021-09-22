@@ -61,18 +61,46 @@ class Calc {
 
     void command( ) {			// command -> expr '\n'
         // (1) command() 내부 채우기
+        int result = expr();
+        if(token == '\n'){
+            System.out.println(result);
+        }else{
+            error();
+        }
     }
 
     int expr( ) {				// expr -> term { '+' term }
         // (2) expr() 내부 채우기
+        int result = term();
+        while (token == '+'){
+            match('+');
+            result+=term();
+        }
+        return result;
     }
 
     int term( ) {				//term -> factor { '*' factor }
         // (3) term() 내부 채우기
+        int result = factor();
+        while (token == '*'){
+            match('*');
+            result *= factor();
+        }
+        return result;
     }
 
     int factor() {				// factor -> '(' expr ')' | number
         // (4) factor() 내부 채우기
+        int result = 0;
+        if(token == '('){
+            match('(');
+            result = expr();
+            match(')');
+        }else if(token == NUMBER){
+            result = value; // 실제값 저장
+            match(NUMBER); // NUMBER 확인
+        }
+        return result;
     }
 
     //////////////////
