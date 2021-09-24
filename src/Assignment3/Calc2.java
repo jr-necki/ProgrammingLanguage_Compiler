@@ -1,13 +1,14 @@
 package Assignment3;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PushbackInputStream;
 
-class Calc {
+class Calc2 {
     int token; int value; int ch;
     private PushbackInputStream input;
     final int NUMBER=256;
 
-    Calc(PushbackInputStream is) {
+    Calc2(PushbackInputStream is) {
         input = is;
     }
 
@@ -72,17 +73,27 @@ class Calc {
         // (2) expr() 내부 채우기
         int result = term();
         while (token == '+'|| token =='-'){
-            match('+');
-            result+=term();
+           if(token == '+'){
+               match('+');
+               result+=term();
+           }else{
+               match('-');
+               result-=term();
+           }
         }
         return result;
     }
     int term( ) {				//term -> factor { '*' factor }
         // (3) term() 내부 채우기
         int result = factor();
-        while (token == '*'){
-            match('*');
-            result *= factor();
+        while (token == '*' || token =='/'){
+           if(token == '*'){
+               match('*');
+               result *= factor();
+           }else{
+               match('/');
+               result /= factor();
+           }
         }
         return result;
     }
@@ -93,6 +104,12 @@ class Calc {
             match('(');
             result = expr();
             match(')');
+        }else if(token == '-'){
+            match('-');
+            if(token == NUMBER){
+                result = value*-1; // 실제값 저장
+                match(NUMBER); // NUMBER 확인
+            }
         }else if(token == NUMBER){
             result = value; // 실제값 저장
             match(NUMBER); // NUMBER 확인
@@ -110,7 +127,7 @@ class Calc {
     }
 
     public static void main(String args[]) {
-        Calc calc = new Calc(new PushbackInputStream(System.in));
+        Calc2 calc = new Calc2(new PushbackInputStream(System.in));
         while(true) {
             System.out.print(">> ");
             calc.parse();
