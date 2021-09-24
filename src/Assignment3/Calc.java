@@ -68,15 +68,17 @@ class Calc {
             error();
         }
     }
+
     int expr( ) {				// expr -> term { '+' term }
         // (2) expr() 내부 채우기
         int result = term();
-        while (token == '+'|| token =='-'){
+        while (token == '+'){
             match('+');
             result+=term();
         }
         return result;
     }
+
     int term( ) {				//term -> factor { '*' factor }
         // (3) term() 내부 채우기
         int result = factor();
@@ -86,6 +88,7 @@ class Calc {
         }
         return result;
     }
+
     int factor() {				// factor -> '(' expr ')' | number
         // (4) factor() 내부 채우기
         int result = 0;

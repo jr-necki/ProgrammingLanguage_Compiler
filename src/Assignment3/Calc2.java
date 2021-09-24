@@ -69,7 +69,7 @@ class Calc2 {
             error();
         }
     }
-    int expr( ) {				// expr -> term { '+' term }
+    int expr( ) {				// <expr> -> <term> { + <term> | - <term> }
         // (2) expr() 내부 채우기
         int result = term();
         while (token == '+'|| token =='-'){
@@ -83,7 +83,7 @@ class Calc2 {
         }
         return result;
     }
-    int term( ) {				//term -> factor { '*' factor }
+    int term( ) {				//<term> -> <factor> { * <factor> | / <factor> }
         // (3) term() 내부 채우기
         int result = factor();
         while (token == '*' || token =='/'){
@@ -97,7 +97,7 @@ class Calc2 {
         }
         return result;
     }
-    int factor() {				// factor -> '(' expr ')' | number
+    int factor() {				// <factor> -> [-] <number> | (<expr>)
         // (4) factor() 내부 채우기
         int result = 0;
         if(token == '('){
